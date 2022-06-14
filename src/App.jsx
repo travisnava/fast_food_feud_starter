@@ -40,7 +40,25 @@ export function App() {
     return (obj.restaurant === clickedRestaurant && obj.food_category === clickedCategory)
   });
 
+  let instructions = ""; // empty var to store string of instructions based off of state variables
+
+  if (clickedCategory == null && clickedRestaurant == null && clickedMenuItem == null) { // user hasn't selected anything
+    instructions = appInfo.instructions.start
+  }
+  else if (clickedCategory != null && clickedRestaurant == null && clickedMenuItem == null) { // user only selected category
+    instructions = appInfo.instructions.onlyCategory
+  }
+  else if (clickedCategory == null && clickedRestaurant != null && clickedMenuItem == null) { // user only selected restaurant
+    instructions = appInfo.instructions.onlyRestaurant
+  }
+  else if (clickedCategory != null && clickedRestaurant != null && clickedMenuItem == null) { // user selected both category and restaurant, now needs to select a menu item
+    instructions = appInfo.instructions.noSelectedItem
+  }
+  else if (clickedCategory != null && clickedRestaurant != null && clickedMenuItem != null) { // user selected category, restaurant, and menu item
+    instructions = appInfo.instructions.allSelected
+  }
   
+
   return (
     <main className="App">
       {/* CATEGORIES COLUMN */}
@@ -70,7 +88,7 @@ export function App() {
         </div>
 
       
-        <Instructions instructions={appInfo.instructions.start}/>
+        <Instructions instructions={instructions}/>
 
         {/* MENU DISPLAY */}
         <div className="MenuDisplay display">
