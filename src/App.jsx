@@ -30,15 +30,16 @@ const { data, categories, restaurants } = createDataSet()
 
 export function App() {
 
-
-  const [clickedCategory, setClickedCategory] = useState("");
-  const [clickedRestaurant, setClickedRestaurant] = useState("");
+  // creating useState hooks
+  const [clickedCategory, setClickedCategory] = useState(null);
+  const [clickedRestaurant, setClickedRestaurant] = useState(null);
   const [clickedMenuItem, setClickedMenuItem] = useState(null);
 
+  // filtering through data array to retrieve menu items that align with current selected restaurant and food category
   let currentMenuItems = data.filter((obj) => {
     return (obj.restaurant === clickedRestaurant && obj.food_category === clickedCategory)
   });
-  console.log(currentMenuItems)
+
   
   return (
     <main className="App">
@@ -46,8 +47,8 @@ export function App() {
       <div className="CategoriesColumn col">
         <div className="categories options">
           <h2 className="title">Categories</h2>
-          {categories.map((category) => {
-            return (<Chip key={category} isActive = {clickedCategory === category}  label={category} onClick={() => setClickedCategory(category)}/>)
+          {categories.map((category) => { // creating chip element for each category in array of categories
+            return (<Chip key={category} isActive = {clickedCategory === category}  label={category} onClick={() => setClickedCategory(category)} onClose={(e) => {e.stopPropagation(); setClickedCategory(null);}} />)
           })}
 
           
@@ -62,25 +63,26 @@ export function App() {
         <div className="RestaurantsRow">
           <h2 className="title">Restaurants</h2>
           <div className="restaurants options">
-          {restaurants.map((restaurant) => {
-            return (<Chip key={restaurant} isActive = {clickedRestaurant === restaurant} label={restaurant} onClick={() => setClickedRestaurant(restaurant)}/>)
+          {restaurants.map((restaurant) => { // creating chip element for ecah restaurant in array of restaurants
+            return (<Chip key={restaurant} isActive = {clickedRestaurant === restaurant} label={restaurant} onClick={() => setClickedRestaurant(restaurant)} onClose={(e) => {e.stopPropagation(); setClickedRestaurant(null);}}/>)
           })}
           </div>
         </div>
 
+      
         <Instructions instructions={appInfo.instructions.start}/>
 
         {/* MENU DISPLAY */}
         <div className="MenuDisplay display">
           <div className="MenuItemButtons menu-items">
             <h2 className="title">Menu Items</h2>
-            {currentMenuItems.map((menuItem) => {
-              return (<Chip key = {menuItem.item_name} label={menuItem.item_name} isActive ={clickedMenuItem === menuItem} onClick={() => setClickedMenuItem(menuItem)} />)
+            {currentMenuItems.map((menuItem) => { {/* creating chip elements to show user which menu items are available with selected restaurant and category*/}
+              return (<Chip key = {menuItem.item_name} label={menuItem.item_name} isActive ={clickedMenuItem === menuItem} onClick={() => setClickedMenuItem(menuItem)} onClose={(e) => {e.stopPropagation(); setClickedMenuItem(null);}}/>)
             })}
           </div>
 
           {/* NUTRITION FACTS */}
-          <div className="NutritionFacts nutrition-facts">
+          <div className="NutritionFacts nutrition-facts"> {/* conditional rendering to check that nutrition label will not pop up until menu item is selected */}
             {clickedMenuItem != null && <NutritionalLabel item = {clickedMenuItem}/>} 
               
       
