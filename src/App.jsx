@@ -81,7 +81,7 @@ export function App() {
 
           {/* NUTRITION FACTS */}
           <div className="NutritionFacts nutrition-facts">
-            {clickedMenuItem != null && <NutritionalLabel label = {clickedMenuItem.item_name} />} 
+            {clickedMenuItem != null && <NutritionalLabel item = {clickedMenuItem}/>} 
               
       
 
